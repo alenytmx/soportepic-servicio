@@ -1,0 +1,178 @@
+# ============================================================
+# Dependencias
+# ============================================================
+node_modules/
+bower_components/
+jspm_packages/
+
+# ============================================================
+# Variables de entorno y secretos
+# Conserva en Git solamente las plantillas sin credenciales.
+# ============================================================
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+!.env.*.example
+*.local
+
+# Claves, certificados y credenciales
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
+credentials.json
+service-account*.json
+
+# ============================================================
+# Compilados y salidas de producción
+# ============================================================
+dist/
+build/
+out/
+public/build/
+.output/
+.vercel/
+.netlify/
+
+# Angular
+.angular/
+.angular/cache/
+
+# React / Next.js / Nuxt / Vite
+.next/
+.nuxt/
+.vite/
+.vinxi/
+.turbo/
+.parcel-cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# ============================================================
+# Pruebas, cobertura y análisis
+# ============================================================
+coverage/
+.nyc_output/
+.jest-cache/
+.vitest/
+test-results/
+playwright-report/
+blob-report/
+.playwright/
+
+# ============================================================
+# Logs y procesos
+# ============================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+debug.log
+*.pid
+*.pid.lock
+*.seed
+pids/
+
+# ============================================================
+# Cachés y archivos temporales
+# ============================================================
+.cache/
+.eslintcache
+.stylelintcache
+.sass-cache/
+.npm/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store/
+.node_repl_history
+.tmp/
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ============================================================
+# Archivos generados durante la ejecución
+# ============================================================
+uploads/
+storage/
+backups/
+exports/
+downloads/
+sessions/
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# ============================================================
+# Editores e IDE
+# ============================================================
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+*.code-workspace
+.vs/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln.docstates
+
+# ============================================================
+# Sistema operativo
+# ============================================================
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon\r
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ============================================================
+# Paquetes y artefactos comprimidos generados
+# ============================================================
+*.tgz
+*.tar.gz
+*.zip
+
+# ============================================================
+# Herramientas de despliegue y emuladores locales
+# ============================================================
+.firebase/
+.serverless/
+.dynamodb/
+.wrangler/
+.sst/
+
+# ============================================================
+# Opcional: archivos de Docker generados localmente
+# ============================================================
+docker-compose.override.yml
+
+# No ignores package-lock.json, yarn.lock ni pnpm-lock.yaml:
+# deben mantenerse versionados para instalaciones reproducibles.

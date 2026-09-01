@@ -1,0 +1,31 @@
+{
+  "name": "soportepic-servicio",
+  "version": "1.3.0",
+  "private": true,
+  "description": "Sistema responsivo para talleres de reparacion de celulares y computadoras",
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "predev": "node scripts/ensure-env.mjs",
+    "dev": "concurrently -k -n API,WEB -c blue,green \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "npm run dev --workspace @soportepic/api",
+    "dev:web": "node scripts/wait-for-url.mjs http://127.0.0.1:3000/api/health API && npm run dev --workspace @soportepic/web",
+    "build": "npm run build --workspace @soportepic/web && npm run build --workspace @soportepic/api",
+    "typecheck": "npm run typecheck --workspace @soportepic/api && npm run typecheck --workspace @soportepic/web",
+    "smoke": "npm run build && node scripts/smoke.mjs",
+    "prestart": "node scripts/ensure-env.mjs",
+    "start": "npm run build && npm run start --workspace @soportepic/api",
+    "start:fast": "npm run start --workspace @soportepic/api",
+    "precreate-admin": "node scripts/ensure-env.mjs",
+    "create-admin": "npm run create-admin --workspace @soportepic/api"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
