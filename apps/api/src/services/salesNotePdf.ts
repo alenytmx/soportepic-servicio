@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import PDFDocument from 'pdfkit';
-import { calculateMaterialsTotal } from '../utils/orderTotals.js';
 
 type AnyOrder = Record<string, any>;
 
@@ -16,7 +15,14 @@ export interface SalesNoteSettings {
   timezone: string;
   rightsText: string;
   supportPhone: string;
-  systemVersion: string;
+  ticketFooter?: string;
+}
+interface SalesNoteItem {
+  quantity: number;
+  description: string;
+  tax: number;
+  price: number;
+  amount: number;
 }
 
 const palette = {
@@ -75,8 +81,8 @@ function drawLogo(doc: PDFKit.PDFDocument, settings: SalesNoteSettings) {
 function drawFooter(doc: PDFKit.PDFDocument, settings: SalesNoteSettings) {
   const width = doc.page.width - 80;
   doc.moveTo(40, 767).lineTo(doc.page.width - 40, 767).strokeColor(palette.border).lineWidth(1).stroke();
-  doc.font('Helvetica-Bold').fontSize(11).fillColor(palette.navy).text('UN PLACER HACER NEGOCIOS', 40, 777, { width, align: 'center' });
-  doc.font('Helvetica').fontSize(7).fillColor(palette.slate).text(`${settings.rightsText} - Soporte ${settings.supportPhone} - v${settings.systemVersion}`, 40, 792, { width, align: 'center' });
+  if (settings.ticketFooter) doc.font('Helvetica').fontSize(7).fillColor(palette.slate).text(settings.ticketFooter, 40, 784, { width, align: 'center' });
+  doc.font('Helvetica').fontSize(7).fillColor(palette.slate).text(`${settings.rightsText} · Soporte ${settings.supportPhone}`, 40, 796, { width, align: 'center' });
 }
 
 function drawTableHeader(doc: PDFKit.PDFDocument, y: number) {
@@ -101,12 +107,13 @@ export function createSalesNotePdf(order: AnyOrder, settings: SalesNoteSettings)
     margins: { top: 30, right: 40, bottom: 36, left: 40 },
     info: { Title: `Nota de venta ${order.folio}`, Author: settings.businessName }
   });
-  const serviceAmount = Number(order.serviceAmount ?? order.total - calculateMaterialsTotal(order.materials || []));
-  const equipment = (order.equipment || []).map((item: AnyOrder) => [item.equipmentType, item.brand, item.model].filter(Boolean).join(' ')).join(', ');
-  const items = [
-    { quantity: 1, description: `${order.orderTypeName || 'Servicio técnico'}${equipment ? ` - ${equipment}` : ''}`, tax: 0, price: serviceAmount, amount: serviceAmount },
-    ...(order.materials || []).map((item: AnyOrder) => ({ quantity: item.quantity, description: item.description, tax: 0, price: item.unitCost, amount: item.quantity * item.unitCost }))
-  ];
+  const items: SalesNoteItem[] = (order.materials || []).map((item: AnyOrder) => ({
+  quantity: Number(item.quantity || 0),
+  description: String(item.description || ''),
+  tax: 0,
+  price: Number(item.unitCost || 0),
+  amount: Number(item.quantity || 0) * Number(item.unitCost || 0)
+}));
 
   drawLogo(doc, settings);
   doc.font('Helvetica-Bold').fontSize(17).fillColor(palette.navy).text(settings.businessName, 132, 34, { width: 260 });

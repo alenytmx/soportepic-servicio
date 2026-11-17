@@ -14,7 +14,6 @@ export interface ReportPdfSettings {
   timezone: string;
   rightsText: string;
   supportPhone: string;
-  systemVersion: string;
 }
 
 const colors = {
@@ -131,7 +130,7 @@ export function createReportPdf(summary: ReportSummary, settings: ReportPdfSetti
 
   const footerY = doc.page.height - doc.page.margins.bottom - 10;
   doc.moveTo(36, footerY - 7).lineTo(doc.page.width - 36, footerY - 7).strokeColor(colors.border).stroke();
-  doc.font('Helvetica').fontSize(7).fillColor(colors.slate).text(`${settings.rightsText} · Soporte ${settings.supportPhone} · v${settings.systemVersion}`, 36, footerY, { width: contentWidth * 0.7 });
+  doc.font('Helvetica').fontSize(7).fillColor(colors.slate).text(`${settings.rightsText} · Soporte ${settings.supportPhone}`, 36, footerY, { width: contentWidth * 0.7 });
   doc.text(`Generado ${new Intl.DateTimeFormat('es-MX', { dateStyle: 'medium', timeStyle: 'short', timeZone: settings.timezone }).format(new Date())}`, 36 + contentWidth * 0.7, footerY, { width: contentWidth * 0.3, align: 'right' });
 
   return doc;

@@ -35,11 +35,10 @@ export async function downloadReportPdfController(req: Request, res: Response) {
     timezone: settings.timezone,
     rightsText: settings.rightsText,
     supportPhone: settings.supportPhone,
-    systemVersion: settings.systemVersion
   });
   const filename = `reporte-${start.toISOString().slice(0, 10)}-${end.toISOString().slice(0, 10)}.pdf`;
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+  res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
   res.setHeader('Cache-Control', 'private, no-store');
   const buffer = await pdfToBuffer(doc);
   res.setHeader('Content-Length', buffer.length);

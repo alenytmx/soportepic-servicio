@@ -44,6 +44,10 @@ export interface Equipment {
   serialNumber: string;
   observations: string;
   accessories: string[];
+  hasAccount?: string;
+  hasBitlocker?: string;
+  devicePassword?: string;
+  biosPassword?: string;
 }
 
 export interface Material {

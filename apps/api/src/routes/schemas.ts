@@ -82,7 +82,11 @@ export const equipmentSchema = z.object({
   model: z.string().trim().max(100).default(''),
   serialNumber: z.string().trim().max(120).default(''),
   observations: z.string().trim().max(1500).default(''),
-  accessories: z.array(z.string().trim().min(1).max(100)).max(20).default([])
+  accessories: z.array(z.string().trim().min(1).max(100)).max(20).default([]),
+  hasAccount: z.enum(['No', 'Sí']).default('No'),
+  hasBitlocker: z.enum(['No', 'Sí', 'Preguntarle al cliente']).default('No'),
+  devicePassword: z.string().max(200).default(''),
+  biosPassword: z.string().max(200).default('')
 });
 
 export const materialSchema = z.object({
@@ -99,7 +103,7 @@ export const serviceOrderCreateSchema = z.object({
   customerReference: z.string().trim().max(500).default(''),
   equipment: z.array(equipmentSchema).min(1).max(10),
   materials: z.array(materialSchema).max(50).default([]),
-  total: z.coerce.number().min(0).max(100_000_000),
+  total: z.coerce.number().min(0).max(100_000_000).default(0),
   notes: z.string().trim().max(1500).default('')
 });
 
@@ -173,6 +177,8 @@ export const settingsSchema = z.object({
   printFormat: z.enum(['a4', 'thermal58', 'thermal80']),
   ticketHeader: z.string().trim().max(300).default(''),
   ticketFooter: z.string().trim().max(500).default(''),
+  rightsText: z.string().trim().max(180).default('Derechos reservados Soportepic'),
+  supportPhone: z.string().trim().max(40).default('311-135-45-85'),
   timezone: z.string().trim().max(80).default('America/Mazatlan')
   ,themeMode: z.enum(['light', 'dark', 'system']).default('system'),
   primaryColor: z.string().regex(/^#[0-9a-f]{6}$/i).default('#2563eb'),

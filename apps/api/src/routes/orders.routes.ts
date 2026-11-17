@@ -118,8 +118,8 @@ ordersRouter.post('/', requirePermission('orders:create'), uploadPhotos, asyncHa
   }
   try {
     const sequence = await nextSequence('serviceOrder');
-    const serviceAmount = money(input.total);
-    const total = calculateOrderTotal(serviceAmount, input.materials);
+    const serviceAmount = 0;
+    const total = calculateOrderTotal(0, input.materials);
     const data = await ServiceOrder.create({
       folio: `OS-${String(sequence).padStart(6, '0')}`,
       folioNumber: sequence,
@@ -171,13 +171,11 @@ ordersRouter.put('/:id', requirePermission('orders:edit'), validate(z.object({ i
     data.orderType = orderType._id;
     data.orderTypeName = orderType.name;
   }
-  const serviceAmount = changes.total !== undefined
-    ? money(changes.total)
-    : money(Number(data.serviceAmount ?? data.total));
+  const serviceAmount = 0;
   const materials = changes.materials !== undefined ? changes.materials : data.materials;
   const newTotal = calculateOrderTotal(serviceAmount, materials);
-  const financialFields = changes.total !== undefined || changes.materials !== undefined ? ['serviceAmount', 'total', 'balance'] : [];
-  if (newTotal < data.paidAmount) throw new AppError('El total del servicio y las refacciones no puede ser menor a lo ya abonado.', 422);
+  const financialFields = changes.materials !== undefined || data.serviceAmount !== 0 ? ['serviceAmount', 'total', 'balance'] : [];
+  if (newTotal < data.paidAmount) throw new AppError('El total de la orden no puede ser menor a lo ya abonado.', 422);
   data.serviceAmount = serviceAmount;
   data.total = newTotal;
   data.balance = money(newTotal - data.paidAmount);

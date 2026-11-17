@@ -19,7 +19,11 @@ const equipmentSchema = new mongoose.Schema({
   model: { type: String, trim: true, maxlength: 100, default: '' },
   serialNumber: { type: String, trim: true, maxlength: 120, default: '' },
   observations: { type: String, trim: true, maxlength: 1500, default: '' },
-  accessories: [{ type: String, trim: true, maxlength: 100 }]
+  accessories: [{ type: String, trim: true, maxlength: 100 }],
+  hasAccount: { type: String, enum: ['No', 'Sí'], default: 'No' },
+  hasBitlocker: { type: String, enum: ['No', 'Sí', 'Preguntarle al cliente'], default: 'No' },
+  devicePassword: { type: String, maxlength: 200, default: '' },
+  biosPassword: { type: String, maxlength: 200, default: '' }
 });
 
 const photoSchema = new mongoose.Schema({

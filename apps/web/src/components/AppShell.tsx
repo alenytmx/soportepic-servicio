@@ -10,8 +10,6 @@ const links = [
   { to: '/', label: 'Inicio', icon: LayoutDashboard, permission: 'dashboard:view' },
   { to: '/orders', label: 'Órdenes', icon: ClipboardList, permission: 'orders:view' },
   { to: '/clients', label: 'Clientes', icon: Users, permission: 'clients:view' },
-  { to: '/order-types', label: 'Tipos de orden', icon: Tags, permission: 'orderTypes:view' },
-  { to: '/quotation-types', label: 'Tipos de cotización', icon: FileQuestion, permission: 'quotationTypes:view' },
   { to: '/quotations', label: 'Cotizaciones', icon: FileQuestion, permission: 'quotations:view' },
   { to: '/warranties', label: 'Garantías', icon: ShieldCheck, permission: 'warranties:view' },
   { to: '/expenses', label: 'Gastos', icon: CircleDollarSign, permission: 'expenses:view' },
@@ -47,6 +45,12 @@ export function AppShell() {
     setDark(resolved === 'dark');
   }, [settings?.themeMode]);
   useEffect(() => {
+    if (!settings?.logoUrl) return;
+    let favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (!favicon) { favicon = document.createElement('link'); favicon.rel = 'icon'; document.head.appendChild(favicon); }
+    favicon.href = `${settings.logoUrl}?v=${settings.logoFilename || 'actual'}`;
+  }, [settings?.logoUrl, settings?.logoFilename]);
+  useEffect(() => {
     if (!settings) return;
     document.documentElement.style.setProperty('--primary', settings.primaryColor || '#2563eb');
     document.documentElement.style.setProperty('--font-scale', String(settings.fontScale || 1));
@@ -58,7 +62,7 @@ export function AppShell() {
     <div className="app-layout">
       {open && <div className="sidebar-overlay" onClick={() => setOpen(false)} />}
       <aside className={`sidebar ${open ? 'sidebar-open' : ''}`}>
-        <div className="brand"><div className="brand-mark"><Wrench size={22} /></div><div className="brand-copy"><strong>{settings?.businessName || 'Soportepic'}</strong><span>Servicio técnico</span></div></div>
+        <div className="brand"><div className="brand-mark">{settings?.logoUrl ? <img src={`${settings.logoUrl}?v=${settings.logoFilename || 'actual'}`} alt="Logotipo" /> : <Wrench size={22} />}</div><div className="brand-copy"><strong>{settings?.businessName || 'Soportepic'}</strong><span>Servicio técnico</span></div></div>
         <nav>
           {links.filter((link) => can(link.permission)).map(({ to, label, icon: Icon }) => (
             <NavLink key={to} to={to} end={to === '/'} title={label} className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}><Icon size={20} /><span>{label}</span></NavLink>
@@ -74,7 +78,7 @@ export function AppShell() {
           <button className="icon-button" onClick={() => void logout()} title="Cerrar sesión"><LogOut /></button>
         </header>
         <main className="content"><Outlet /></main>
-        <footer>{settings?.rightsText || 'Derechos reservados Soportepic'} · Soporte {settings?.supportPhone || '311-135-45-85'} · v{settings?.systemVersion || '1.3.0'}</footer>
+        <footer>{settings?.rightsText || 'Derechos reservados Soportepic'} · Soporte {settings?.supportPhone || '311-135-45-85'}</footer>
       </div>
     </div>
   );

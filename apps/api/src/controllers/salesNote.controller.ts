@@ -19,10 +19,10 @@ export async function downloadSalesNoteController(req: Request, res: Response) {
     timezone: settings.timezone,
     rightsText: settings.rightsText,
     supportPhone: settings.supportPhone,
-    systemVersion: settings.systemVersion
+    ticketFooter: settings.ticketFooter,
   });
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', `attachment; filename="nota-venta-${order.folio}.pdf"`);
+  res.setHeader('Content-Disposition', `inline; filename="nota-venta-${order.folio}.pdf"`);
   res.setHeader('Cache-Control', 'private, no-store');
   const buffer = await pdfToBuffer(doc);
   res.setHeader('Content-Length', buffer.length);

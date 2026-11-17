@@ -73,7 +73,7 @@ export async function createOrderPdf(order: AnyOrder, format: 'a4' | 'thermal58'
   if (order.materials?.length) {
     ensureSpace(doc);
     drawLine(doc);
-    doc.font('Helvetica-Bold').text('REFACCIONES / MATERIALES');
+    doc.font('Helvetica-Bold').text('REFACCIONES, REPARACIONES, MATERIALES O SERVICIOS');
     order.materials.forEach((item: any) => {
       doc.font('Helvetica').text(`${item.quantity} × ${item.description} — ${currency(item.quantity * item.unitCost)}`);
     });
@@ -128,7 +128,7 @@ export async function createOrderPdf(order: AnyOrder, format: 'a4' | 'thermal58'
   }
   doc.moveDown();
   if (settings.ticketFooter) doc.text(settings.ticketFooter, { align: 'center' });
-  doc.text(`${settings.rightsText} · Soporte ${settings.supportPhone} · v${settings.systemVersion}`, { align: 'center' });
+  doc.text(`${settings.rightsText} · Soporte ${settings.supportPhone}`, { align: 'center' });
 
   return doc;
 }
