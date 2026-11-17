@@ -16,7 +16,7 @@
     "typecheck": "npm run typecheck --workspace @soportepic/api && npm run typecheck --workspace @soportepic/web",
     "smoke": "npm run build && node scripts/smoke.mjs",
     "prestart": "node scripts/ensure-env.mjs",
-    "start": "npm run build && npm run start --workspace @soportepic/api",
+    "start": "npm run start --workspace @soportepic/api",
     "start:fast": "npm run start --workspace @soportepic/api",
     "precreate-admin": "node scripts/ensure-env.mjs",
     "create-admin": "npm run create-admin --workspace @soportepic/api"
